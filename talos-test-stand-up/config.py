@@ -31,3 +31,20 @@ EXPECTED_DISK_VOLS = (
     [f"talos-cp-{i}.qcow2" for i in range(1, CONTROL_PLANES_COUNT + 1)] +
     [f"talos-worker-{i}.qcow2" for i in range(1, WORKERS_COUNT + 1)]
 )
+
+# ---- Registry mirrors (необязательно) ----
+# REGISTRY_MIRRORS = {}   # оставьте пустым, если зеркала не нужны
+# Если словарь не пустой, будет сгенерирован патч для --config-patch
+REGISTRY_MIRRORS = {
+    "registry.k8s.io": {
+        "endpoints": [
+            "https://k8s.kubesre.xyz",
+            "https://registry-k8s-io.mirrors.sjtug.sjtu.edu.cn"
+            # "https://k8s.m.daocloud.io",
+            # "https://k8s.nju.edu.cn",
+        ]
+    },
+    # "docker.io": {
+    #     "endpoints": ["https://mirror.example.com"]
+    # }
+}

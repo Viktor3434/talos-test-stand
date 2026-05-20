@@ -30,18 +30,40 @@ def generate_secret_if_missing() -> None:
     print_ok("secrets.yaml создан")
 
 
-def generate_config(endpoint_ip: str, install_disk: str) -> None:
-    print_info(f"Генерация конфигураций для {CLUSTER_NAME} с endpoint https://{endpoint_ip}:6443")
+def generate_config(endpoint_ip: str, install_disk: str,
+                    registry_mirrors: Optional[dict] = None) -> None:
+
+    print_info(f"Генерация конфигураций для {CLUSTER_NAME} "
+               f"с endpoint https://{endpoint_ip}:6443")
+
     cmd = (
         f"talosctl gen config {CLUSTER_NAME} https://{endpoint_ip}:6443 "
-        f"--with-secrets {TALOS_SECRET} -o {TALOS_CONF_DIR} "
-        f"--install-disk {install_disk} --force"
+        f"--with-secrets {TALOS_SECRET} "
+        f"-o {TALOS_CONF_DIR} "
+        f"--install-disk {install_disk} "
+        f"--force"
     )
+
+    if registry_mirrors:
+        patch = {
+            "machine": {
+                "registries": {
+                    "mirrors": registry_mirrors
+                }
+            }
+        }
+        # Запись во временный файл
+        patch_file = TALOS_CONF_DIR / ".mirrors_patch.json"
+        patch_file.write_text(json.dumps(patch))
+        cmd += f" --config-patch @{patch_file}"
+        print_info(f"Добавлены registry mirrors (через файл патча {patch_file})")
+
     code, _, err = run_cmd(cmd)
     if code != 0:
         print_fail(f"Ошибка генерации конфигов: {err}")
         raise SystemExit(1)
-    # сохранение параметров
+
+    # Сохраняем параметры кластера
     params = {
         "cluster_name": CLUSTER_NAME,
         "endpoint": f"https://{endpoint_ip}:6443",

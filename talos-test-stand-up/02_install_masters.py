@@ -6,7 +6,7 @@ from utils.libvirt import get_talos_vm_names, get_vm_ips, get_install_disk
 from utils.talos import (check_talosctl, generate_secret_if_missing, generate_config,
                          configure_talos_context, apply_config, wait_for_nodes_api,
                          bootstrap_cluster, fetch_kubeconfig)
-from config import CONTROL_PLANES_COUNT, TALOS_CONF_DIR
+from config import CONTROL_PLANES_COUNT, TALOS_CONF_DIR, REGISTRY_MIRRORS
 
 def main():
     print_info("=== Установка Talos на master-узлы ===")
@@ -28,7 +28,7 @@ def main():
     install_disk = get_install_disk(master_names[0])
 
     generate_secret_if_missing()
-    generate_config(endpoint_ip, install_disk)
+    generate_config(endpoint_ip, install_disk, REGISTRY_MIRRORS)
     configure_talos_context(endpoint_ip)
 
     apply_config(master_ips, "controlplane.yaml")
