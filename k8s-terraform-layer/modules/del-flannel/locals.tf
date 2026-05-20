@@ -15,4 +15,33 @@ locals {
   talos_context = local.talos_config.context
   talos_endpoint_port = "6443"
   talos_endpoint_ip = toset(local.talos_config.contexts[local.talos_context].endpoints)
+
+  ###
+  # 
+  ###
+  talos_patch = {
+    cluster = {
+      network = {
+        cni = {
+          name = "none"
+        }
+      }
+      proxy = {
+        disabled = true
+      }
+    }
+    machine = {
+      registries = {
+        mirrors = {
+          "registry.k8s.io" = {
+            endpoints = [
+              "https://k8s.kubesre.xyz",
+              "https://registry-k8s-io.mirrors.sjtug.sjtu.edu.cn"
+            ]
+          }
+        }
+      }
+    }
+  }
+
 }
