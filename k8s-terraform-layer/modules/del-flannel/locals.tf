@@ -12,9 +12,9 @@ locals {
     local.talosconfig_exists_2 ? yamldecode(file(local.talosconfig_path_2)) : null
   )
   #
-  talos_context = local.talos_config.context
+  talos_context       = local.talos_config.context
   talos_endpoint_port = "6443"
-  talos_endpoint_ip = toset(local.talos_config.contexts[local.talos_context].endpoints)
+  talos_endpoint_ip   = toset(local.talos_config.contexts[local.talos_context].endpoints)
 
   ###
   # 

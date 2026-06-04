@@ -10,7 +10,7 @@ data "talos_machine_configuration" "controlplane" {
   cluster_endpoint = "https://${each.value}:${local.talos_endpoint_port}"
   machine_secrets  = talos_machine_secrets.machine_secrets.machine_secrets
 
-  kubernetes_version  = "v1.35.4"
+  kubernetes_version = "v1.35.4"
 }
 
 resource "talos_machine_secrets" "machine_secrets" {}
@@ -22,9 +22,9 @@ resource "talos_machine_secrets" "machine_secrets" {}
 resource "talos_machine_configuration_apply" "control_plane" {
   for_each = local.talos_endpoint_ip
 
-  client_configuration = talos_machine_secrets.machine_secrets.client_configuration
+  client_configuration        = talos_machine_secrets.machine_secrets.client_configuration
   machine_configuration_input = data.talos_machine_configuration.controlplane[each.key].machine_configuration
-  node = each.value
+  node                        = each.value
 
   config_patches = [yamlencode(local.talos_patch)]
 }
