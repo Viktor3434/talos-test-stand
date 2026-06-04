@@ -1,6 +1,6 @@
 # k8s-terraform-layer/modules/helm-charts-infra/gateway-api.tf
 
-resource "helm_release" "envoy_gateway" {
+resource "helm_release" "gateway_api" {
   name             = "eg"
   repository       = "oci://docker.io/envoyproxy"
   chart            = "gateway-helm"

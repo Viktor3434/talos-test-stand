@@ -12,9 +12,9 @@ controller:
   replicas: 1  # Для HA можно увеличить до 2+
   
   resources:
-    requests:
-      cpu: 100m
-      memory: 256Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 256Mi
     limits:
       cpu: 500m
       memory: 1Gi
@@ -45,9 +45,9 @@ server:
   replicas: 2  # HA для UI
   
   resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
     limits:
       cpu: 500m
       memory: 512Mi
@@ -83,12 +83,12 @@ server:
 
 # Repo-server (git операции)
 repoServer:
-  replicas: 2
+  replicas: 1
   
   resources:
-    requests:
-      cpu: 100m
-      memory: 256Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 256Mi
     limits:
       cpu: 1000m
       memory: 1Gi
@@ -114,9 +114,9 @@ redis:
   enabled: true
   
   resources:
-    requests:
-      cpu: 50m
-      memory: 64Mi
+    # requests:
+    #   cpu: 50m
+    #   memory: 64Mi
     limits:
       cpu: 200m
       memory: 256Mi
@@ -137,9 +137,9 @@ applicationSet:
   replicas: 1
   
   resources:
-    requests:
-      cpu: 50m
-      memory: 128Mi
+    # requests:
+    #   cpu: 50m
+    #   memory: 128Mi
     limits:
       cpu: 200m
       memory: 512Mi
@@ -154,9 +154,9 @@ notifications:
   enabled: true
   
   resources:
-    requests:
-      cpu: 50m
-      memory: 64Mi
+    # requests:
+    #   cpu: 50m
+    #   memory: 64Mi
     limits:
       cpu: 100m
       memory: 256Mi

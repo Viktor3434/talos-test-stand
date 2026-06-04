@@ -11,7 +11,7 @@ resource "helm_release" "argocd" {
   ]
 
   depends_on = [
-    helm_release.envoy_gateway
+    helm_release.gateway_api
   ]
 
   lifecycle {
