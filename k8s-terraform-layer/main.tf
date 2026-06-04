@@ -10,3 +10,14 @@ module "cni-install" {
   source = "./modules/cni-install"
   depends_on = [module.del-flannel]
 }
+
+module "helm-charts-infra" {
+  source = "./modules/helm-charts-infra"
+
+  argocd_namespace  = module.namespaces.argocd_namespace
+
+  depends_on = [
+    module.namespaces,
+    module.cni-install
+  ]
+}

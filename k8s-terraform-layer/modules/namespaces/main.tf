@@ -9,3 +9,9 @@ resource "kubernetes_namespace" "gateway_api" {
     name = "gateway-api"
   }
 }
+
+resource "kubernetes_namespace" "argocd" {
+  metadata {
+    name = "argocd"
+  }
+}
