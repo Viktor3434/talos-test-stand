@@ -112,7 +112,11 @@ repoServer:
 # Redis (кеш)
 redis:
   enabled: true
-  
+  image:
+    repository: cr.yandex/mirror/redis
+    tag: 7-alpine
+
+
   resources:
     # requests:
     #   cpu: 50m
