@@ -14,6 +14,7 @@ module "cni-install" {
 module "helm-charts-infra" {
   source = "./modules/helm-charts-infra"
 
+  gateway_api_namespace = module.namespaces.gateway_api_namespace
   argocd_namespace  = module.namespaces.argocd_namespace
 
   depends_on = [

@@ -1,0 +1,17 @@
+# k8s-terraform-layer/modules/helm-charts-infra/values/envoy-gateway-values.yaml
+
+envoyGateway:
+  # Ограничение ресурсов
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  
+# Настройки для Gateway API controller
+config:
+  envoyGateway:
+    gateway:
+      controllerName: gateway.envoyproxy.io/gatewayclass-controller

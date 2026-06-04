@@ -9,4 +9,12 @@ resource "helm_release" "argocd" {
   values = [
     file("${path.module}/values/argocd-values.yaml")
   ]
+
+  depends_on = [
+    helm_release.envoy_gateway
+  ]
+
+  lifecycle {
+    prevent_destroy = false
+  }
 }
