@@ -1,14 +1,14 @@
-output "prometheus_namespace" {
-  description = "Name of Prometheus namespace"
-  value       = kubernetes_namespace.prometheus.metadata[0].name
+output "namespaces" {
+  description = "Map of created namespaces"
+  value       = { for k, v in kubernetes_namespace.this : k => v.metadata[0].name }
 }
 
 output "gateway_api_namespace" {
-  description = "Name of Gateway API namespace"
-  value       = kubernetes_namespace.gateway_api.metadata[0].name
+  description = "Name of gateway-api namespace"
+  value       = kubernetes_namespace.this["gateway-api"].metadata[0].name
 }
 
 output "argocd_namespace" {
-  description = "Name of ArgoCD namespace"
-  value       = kubernetes_namespace.argocd.metadata[0].name
+  description = "Name of argocd namespace"
+  value       = kubernetes_namespace.this["argocd"].metadata[0].name
 }

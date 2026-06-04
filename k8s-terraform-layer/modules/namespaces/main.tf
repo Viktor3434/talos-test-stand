@@ -1,17 +1,7 @@
-resource "kubernetes_namespace" "prometheus" {
+resource "kubernetes_namespace" "this" {
+  for_each = toset(var.namespaces)
+  
   metadata {
-    name = "prometheus"
-  }
-}
-
-resource "kubernetes_namespace" "gateway_api" {
-  metadata {
-    name = "gateway-api"
-  }
-}
-
-resource "kubernetes_namespace" "argocd" {
-  metadata {
-    name = "argocd"
+    name = each.value
   }
 }
