@@ -14,6 +14,10 @@ terraform {
       source  = "siderolabs/talos"
       version = "~> 0.11"
     }
+    kubectl = {
+      source  = "alekc/kubectl"
+      version = "~> 2.4.1"
+    }
   }
 }
 
@@ -27,4 +31,8 @@ provider "helm" {
   kubernetes = {
     config_path = "~/.kube/config"
   }
+}
+
+provider "kubectl" {
+  config_path = "~/.kube/config"
 }
