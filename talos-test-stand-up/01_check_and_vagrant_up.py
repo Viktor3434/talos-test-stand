@@ -21,6 +21,8 @@ from utils.checks import (
 from utils.libvirt import (
     pool_exists, pool_active, create_pool, volume_exists, refresh_pool
 )
+from utils.template_render import generate_vagrantfile
+
 
 def ensure_iso_pool() -> bool:
     """Убеждается, что пул ISO существует и в нём есть нужный том."""
@@ -111,6 +113,7 @@ def main():
         all_ok = False
 
     # Vagrantfile
+    generate_vagrantfile()
     vagrantfile_path = VAGRANTFILE_DIR / "Vagrantfile"
     if vagrantfile_path.is_file():
         print_ok(f"Vagrantfile найден в {VAGRANTFILE_DIR}")
