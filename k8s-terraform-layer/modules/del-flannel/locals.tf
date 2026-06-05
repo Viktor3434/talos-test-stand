@@ -36,7 +36,8 @@ locals {
           "registry.k8s.io" = {
             endpoints = [
               "https://k8s.kubesre.xyz",
-              "https://registry-k8s-io.mirrors.sjtug.sjtu.edu.cn"
+              "https://registry-k8s-io.mirrors.sjtug.sjtu.edu.cn",
+              "https://k8s.nju.edu.cn"
             ]
           }
         }
