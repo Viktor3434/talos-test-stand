@@ -7,7 +7,7 @@ NETWORK_NAME = "default"
 
 # --- Количество узлов ---
 CONTROL_PLANES_COUNT = 1
-WORKERS_COUNT = 2
+WORKERS_COUNT = 1
 
 # --- Пути ---
 TALOS_CONF_DIR = Path("~/.talos").expanduser()
@@ -25,6 +25,10 @@ POOL_DISKS_NAME = "pool-talos"
 POOL_DISKS_TARGET = Path("~/VirtualMachines/TalOS-linux").expanduser()
 ISO_VOL_NAME = "metal-amd64.iso"
 
+MEMORY_CP_NODES = 4096
+MEMORY_WORKER_NODES = 8192
+CPU_CP_NODES = 4
+CPU_WORKER_NODES = 4
 
 # --- Ожидаемые имена дисков (формируются из количества узлов) ---
 EXPECTED_DISK_VOLS = (
