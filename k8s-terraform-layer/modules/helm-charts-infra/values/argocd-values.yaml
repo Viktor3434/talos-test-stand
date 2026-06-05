@@ -2,14 +2,13 @@
 
 # Глобальные настройки
 global:
-  domain: argocd.local  # Замените на ваш реальный домен
+  domain: argocd.local
   logging:
     format: json
     level: info
 
-# Controller (argocd-application-controller) - сердце ArgoCD
 controller:
-  replicas: 1  # Для HA можно увеличить до 2+
+  replicas: 1
   
   resources:
     # requests:
@@ -40,9 +39,8 @@ controller:
     seccompProfile:
       type: RuntimeDefault
 
-# ArgoCD Server (UI и API)
 server:
-  replicas: 2  # HA для UI
+  replicas: 1
   
   resources:
     # requests:
@@ -52,7 +50,6 @@ server:
       cpu: 500m
       memory: 512Mi
   
-  # ВАЖНО: Отключаем встроенный Ingress, используем Envoy Gateway API
   ingress:
     enabled: false
   
@@ -61,9 +58,8 @@ server:
     type: ClusterIP
     servicePortHttpName: http
   
-  # Extra args для поддержки gRPC и HTTP
   extraArgs:
-    - --insecure  # TLS терминаруется на Envoy Gateway
+    - --insecure  # TLS terminate на Envoy Gateway
   
   pdb:
     enabled: true
@@ -81,7 +77,6 @@ server:
       drop:
         - ALL
 
-# Repo-server (git операции)
 repoServer:
   replicas: 1
   
@@ -109,7 +104,6 @@ repoServer:
       drop:
         - ALL
 
-# Redis (кеш)
 redis:
   enabled: true
   image:
@@ -136,39 +130,39 @@ redis:
 
 # ApplicationSet controller (для GitOps мульти-кластер)
 applicationSet:
-  enabled: true
+  enabled: false
   
-  replicas: 1
+#   replicas: 1
   
-  resources:
-    # requests:
-    #   cpu: 50m
-    #   memory: 128Mi
-    limits:
-      cpu: 200m
-      memory: 512Mi
+#   resources:
+#     # requests:
+#     #   cpu: 50m
+#     #   memory: 128Mi
+#     limits:
+#       cpu: 200m
+#       memory: 512Mi
   
-  tolerations:
-    - key: node-role.kubernetes.io/control-plane
-      operator: Exists
-      effect: NoSchedule
+#   tolerations:
+#     - key: node-role.kubernetes.io/control-plane
+#       operator: Exists
+#       effect: NoSchedule
 
-# Notifications controller
-notifications:
-  enabled: true
+# # Notifications controller
+# notifications:
+#   enabled: true
   
-  resources:
-    # requests:
-    #   cpu: 50m
-    #   memory: 64Mi
-    limits:
-      cpu: 100m
-      memory: 256Mi
+#   resources:
+#     # requests:
+#     #   cpu: 50m
+#     #   memory: 64Mi
+#     limits:
+#       cpu: 100m
+#       memory: 256Mi
   
-  tolerations:
-    - key: node-role.kubernetes.io/control-plane
-      operator: Exists
-      effect: NoSchedule
+#   tolerations:
+#     - key: node-role.kubernetes.io/control-plane
+#       operator: Exists
+#       effect: NoSchedule
 
 # Dex (OIDC провайдер) - отключаем, если не используем внешний SSO
 dex:
