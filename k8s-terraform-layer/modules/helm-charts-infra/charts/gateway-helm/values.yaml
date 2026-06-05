@@ -1,5 +1,3 @@
-# k8s-terraform-layer/modules/helm-charts-infra/values/envoy-gateway-values.yaml
-
 # Global settings
 global:
   # If set, these take highest precedence and change envoyGateway, envoyProxy, and ratelimit's container registry and pull secrets.
@@ -58,9 +56,9 @@ deployment:
     resources:
       limits:
         memory: 1024Mi
-      # requests:
-      #   cpu: 100m
-      #   memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
     securityContext:
       allowPrivilegeEscalation: false
       capabilities:
