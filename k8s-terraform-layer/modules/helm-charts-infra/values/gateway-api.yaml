@@ -130,6 +130,17 @@ config:
       controllerName: gateway.envoyproxy.io/gatewayclass-controller
     provider:
       type: Kubernetes
+      kubernetes:
+        envoyService:
+          type: NodePort
+          patch:
+            type: StrategicMerge
+            value:
+              spec:
+                ports:
+                - name: http-80
+                  nodePort: 30080
+                  port: 80
     logging:
       level:
         default: info

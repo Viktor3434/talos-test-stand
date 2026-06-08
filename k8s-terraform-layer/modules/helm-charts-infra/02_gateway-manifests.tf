@@ -33,7 +33,6 @@ resource "kubectl_manifest" "envoy_proxy" {
   ]
 }
 
-# GatewayClass с reference на EnvoyProxy
 resource "kubectl_manifest" "gateway_class" {
   yaml_body = <<-YAML
     apiVersion: gateway.networking.k8s.io/v1
@@ -51,7 +50,7 @@ resource "kubectl_manifest" "gateway_class" {
 
   depends_on = [
     kubectl_manifest.gateway_api_crds,
-    kubectl_manifest.envoy_proxy,
+    # kubectl_manifest.envoy_proxy,
     helm_release.gateway_api
   ]
 }
@@ -78,7 +77,7 @@ resource "kubectl_manifest" "gateway" {
   depends_on = [
     kubectl_manifest.gateway_api_crds,
     kubectl_manifest.gateway_class,
-    kubectl_manifest.envoy_proxy,
+    # kubectl_manifest.envoy_proxy,
     helm_release.gateway_api
   ]
 }
