@@ -1,4 +1,4 @@
-resource "kubectl_manifest" "gateway_manifests" {
+resource "kubectl_manifest" "gateway_class" {
   yaml_body = <<-YAML
     apiVersion: gateway.networking.k8s.io/v1
     kind: GatewayClass
@@ -6,7 +6,16 @@ resource "kubectl_manifest" "gateway_manifests" {
       name: eg
     spec:
       controllerName: gateway.envoyproxy.io/gatewayclass-controller
-    ---
+  YAML
+
+  depends_on = [
+    kubectl_manifest.gateway_api_crds,
+    helm_release.gateway_api
+  ]
+}
+
+resource "kubectl_manifest" "gateway" {
+  yaml_body = <<-YAML
     apiVersion: gateway.networking.k8s.io/v1
     kind: Gateway
     metadata:
@@ -22,6 +31,7 @@ resource "kubectl_manifest" "gateway_manifests" {
 
   depends_on = [
     kubectl_manifest.gateway_api_crds,
+    kubectl_manifest.gateway_class,
     helm_release.gateway_api
   ]
 }
