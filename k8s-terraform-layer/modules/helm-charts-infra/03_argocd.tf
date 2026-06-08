@@ -11,7 +11,10 @@ resource "helm_release" "argocd" {
   ]
 
   depends_on = [
-    helm_release.gateway_api
+    helm_release.gateway_api,
+    kubectl_manifest.gateway_api_crds,
+    kubectl_manifest.gateway_class,
+    kubectl_manifest.gateway,
   ]
 
   lifecycle {
