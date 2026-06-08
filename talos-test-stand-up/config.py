@@ -25,10 +25,10 @@ POOL_DISKS_NAME = "pool-talos"
 POOL_DISKS_TARGET = Path("~/VirtualMachines/TalOS-linux").expanduser()
 ISO_VOL_NAME = "metal-amd64.iso"
 
-MEMORY_CP_NODES = 4096
+MEMORY_CP_NODES = 6144
 MEMORY_WORKER_NODES = 8192
-CPU_CP_NODES = 4
-CPU_WORKER_NODES = 4
+CPU_CP_NODES = 2
+CPU_WORKER_NODES = 6
 
 # For MetalLB
 DHCP_RANGE_START = "192.168.122.2"
@@ -47,9 +47,9 @@ REGISTRY_MIRRORS = {
     "registry.k8s.io": {
         "endpoints": [
             "https://k8s.kubesre.xyz",
-            "https://registry-k8s-io.mirrors.sjtug.sjtu.edu.cn"
+            "https://registry-k8s-io.mirrors.sjtug.sjtu.edu.cn",
+            "https://k8s.nju.edu.cn"
             # "https://k8s.m.daocloud.io",
-            # "https://k8s.nju.edu.cn",
         ]
     },
     # "docker.io": {

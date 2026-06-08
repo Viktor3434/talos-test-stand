@@ -66,3 +66,21 @@ VirtualMachines/
 *.log
 *.tmp
 *.bak
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+.terraform.lock.hcl
+
+# Секреты и конфигурации
+terraform.tfvars        # Файл с реальными значениями переменных
+*.kubeconfig
+secrets/
+
+# Сгенерированные файлы
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json

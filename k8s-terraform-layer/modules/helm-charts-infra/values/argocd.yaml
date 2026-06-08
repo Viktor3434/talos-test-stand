@@ -1,0 +1,202 @@
+# k8s-terraform-layer/modules/helm-charts-infra/values/argocd-values.yaml
+
+# Глобальные настройки
+global:
+  domain: argocd.local
+  logging:
+    format: json
+    level: info
+
+controller:
+  replicas: 1
+  
+  resources:
+    # requests:
+    #   cpu: 100m
+    #   memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+  
+  # PodDisruptionBudget для стабильности
+  pdb:
+    enabled: true
+    minAvailable: 1
+  
+  # Toleration для запуска на control-plane нодах Talos
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+  
+  # SecurityContext для Talos
+  containerSecurityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    seccompProfile:
+      type: RuntimeDefault
+
+server:
+  replicas: 1
+  
+  resources:
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  
+  ingress:
+    enabled: false
+  
+  # Service type ClusterIP - трафик пойдет через Gateway API
+  service:
+    type: ClusterIP
+    servicePortHttpName: http
+    # Для gRPC over HTTP/2 (если нужен gRPC)
+    # servicePortHttpsAppProtocol: kubernetes.io/h2c
+  
+  extraArgs:
+    - --insecure  # TLS terminate на Envoy Gateway
+  
+  # HTTPRoute для Gateway API (новая функция в chart 9.x)
+  httproute:
+    enabled: true
+    annotations: {}
+    labels: {}
+    parentRefs:
+      - name: eg
+        namespace: envoy-gateway-system
+        sectionName: http
+    hostnames:
+      - "argocd.local"
+    rules:
+      - backendRefs:
+          - name: argocd-server
+            port: 80
+        matches:
+          - path:
+              type: PathPrefix
+              value: /
+  
+  # Опционально: GRPCRoute для gRPC трафика (CLI argocd)
+  # grpcroute:
+  #   enabled: true
+  #   parentRefs:
+  #     - name: eg
+  #       namespace: envoy-gateway-system
+  #       sectionName: grpc
+  #   hostnames:
+  #     - "grpc.argocd.local"
+  
+  pdb:
+    enabled: true
+    minAvailable: 1
+  
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+  
+  containerSecurityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+
+repoServer:
+  replicas: 1
+  
+  resources:
+    # requests:
+    #   cpu: 100m
+    #   memory: 256Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+  
+  pdb:
+    enabled: true
+    minAvailable: 1
+  
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+  
+  containerSecurityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+
+redis:
+  enabled: true
+  image:
+    repository: cr.yandex/mirror/redis
+    tag: 7-alpine
+
+  resources:
+    # requests:
+    #   cpu: 50m
+    #   memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+  
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+  
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 999
+
+# ApplicationSet controller
+applicationSet:
+  replicas: 0
+
+# Dex (OIDC провайдер) - отключаем, если не используем внешний SSO
+dex:
+  enabled: false
+
+# Конфигурация ArgoCD (хранится в ConfigMap)
+configs:
+  params:
+    # Отключаем TLS на server (терминируем на Gateway)
+    server.insecure: true
+    
+  cm:
+    # Timeout для приложений
+    timeout.reconciliation: 180s
+    
+    # Resource tracking method
+    application.resourceTrackingMethod: annotation+label
+    
+    # Exec enabled для kubectl exec в UI
+    exec.enabled: true
+    
+  rbac:
+    policy.default: role:readonly
+    policy.csv: |
+      # Администратор имеет полный доступ
+      g, admin, role:admin
+      # Разработчики могут смотреть все и деплоить в dev
+      p, role:developer, applications, get, */*, allow
+      p, role:developer, applications, sync, */*, allow
+
+notifications:
+  # -- Enable notifications controller
+  enabled: false
+
+# CRDs устанавливаются вместе с чартом
+crds:
+  install: true
+  keep: false
