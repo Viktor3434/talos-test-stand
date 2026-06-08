@@ -5,7 +5,7 @@
 ###
 data "helm_template" "gateway_crd" {
   name             = "gateway-crd"
-  chart            = "${path.module}/charts/gateway-helm/charts/crds"
+  chart            = "${path.module}/charts/gateway-helm-v1.8.1/charts/crds"
   namespace        = var.gateway_api_namespace
 }
 
@@ -27,7 +27,7 @@ resource "kubectl_manifest" "gateway_api_crds" {
 resource "helm_release" "gateway_api" {
   name             = "gateway-helm"
   # repository       = "oci://docker.io/envoyproxy" 
-  chart            = "${path.module}/charts/gateway-helm"
+  chart            = "${path.module}/charts/gateway-helm-v1.8.1"
   # version          = "v1.8.1"
   namespace        = var.gateway_api_namespace
   create_namespace = false

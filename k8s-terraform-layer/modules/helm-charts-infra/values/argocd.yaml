@@ -57,9 +57,41 @@ server:
   service:
     type: ClusterIP
     servicePortHttpName: http
+    # Для gRPC over HTTP/2 (если нужен gRPC)
+    # servicePortHttpsAppProtocol: kubernetes.io/h2c
   
   extraArgs:
     - --insecure  # TLS terminate на Envoy Gateway
+  
+  # HTTPRoute для Gateway API (новая функция в chart 9.x)
+  httproute:
+    enabled: true
+    annotations: {}
+    labels: {}
+    parentRefs:
+      - name: eg  # Имя вашего Gateway (замените на актуальное)
+        namespace: envoy-gateway-system  # Namespace Gateway (замените на актуальное)
+        sectionName: https  # Имя listener'а в Gateway
+    hostnames:
+      - "argocd.local"
+    rules:
+      - backendRefs:
+          - name: argocd-server
+            port: 80
+        matches:
+          - path:
+              type: PathPrefix
+              value: /
+  
+  # Опционально: GRPCRoute для gRPC трафика (CLI argocd)
+  # grpcroute:
+  #   enabled: true
+  #   parentRefs:
+  #     - name: eg
+  #       namespace: envoy-gateway-system
+  #       sectionName: grpc
+  #   hostnames:
+  #     - "grpc.argocd.local"
   
   pdb:
     enabled: true
@@ -110,7 +142,6 @@ redis:
     repository: cr.yandex/mirror/redis
     tag: 7-alpine
 
-
   resources:
     # requests:
     #   cpu: 50m
@@ -128,41 +159,9 @@ redis:
     runAsNonRoot: true
     runAsUser: 999
 
-# ApplicationSet controller (для GitOps мульти-кластер)
+# ApplicationSet controller
 applicationSet:
-  enabled: false
-  
-#   replicas: 1
-  
-#   resources:
-#     # requests:
-#     #   cpu: 50m
-#     #   memory: 128Mi
-#     limits:
-#       cpu: 200m
-#       memory: 512Mi
-  
-#   tolerations:
-#     - key: node-role.kubernetes.io/control-plane
-#       operator: Exists
-#       effect: NoSchedule
-
-# # Notifications controller
-# notifications:
-#   enabled: true
-  
-#   resources:
-#     # requests:
-#     #   cpu: 50m
-#     #   memory: 64Mi
-#     limits:
-#       cpu: 100m
-#       memory: 256Mi
-  
-#   tolerations:
-#     - key: node-role.kubernetes.io/control-plane
-#       operator: Exists
-#       effect: NoSchedule
+  replicas: 0
 
 # Dex (OIDC провайдер) - отключаем, если не используем внешний SSO
 dex:
@@ -192,6 +191,10 @@ configs:
       # Разработчики могут смотреть все и деплоить в dev
       p, role:developer, applications, get, */*, allow
       p, role:developer, applications, sync, */*, allow
+
+notifications:
+  # -- Enable notifications controller
+  enabled: false
 
 # CRDs устанавливаются вместе с чартом
 crds:

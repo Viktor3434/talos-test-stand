@@ -5,7 +5,7 @@ output "namespaces" {
 
 output "gateway_api_namespace" {
   description = "Name of gateway-api namespace"
-  value       = kubernetes_namespace.this["gateway-api"].metadata[0].name
+  value       = kubernetes_namespace.this["envoy-gateway-system"].metadata[0].name
 }
 
 output "argocd_namespace" {

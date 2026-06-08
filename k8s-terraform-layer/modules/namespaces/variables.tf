@@ -1,5 +1,5 @@
 variable "namespaces" {
   description = "List of namespaces to create"
   type        = list(string)
-  default     = ["prometheus", "gateway-api", "argocd"]
+  default     = ["prometheus", "envoy-gateway-system", "argocd"]
 }
