@@ -14,8 +14,4 @@ resource "helm_release" "metrics_server" {
         - --kubelet-preferred-address-types=InternalIP
     EOT
   ]
-
-  depends_on = [
-    helm_release.gateway_api
-  ]
 }

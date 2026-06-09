@@ -1,3 +1,45 @@
+###
+# To access NodePort (use without MetalLB)
+###
+
+# resource "kubectl_manifest" "envoy_proxy" {
+#   yaml_body = <<-YAML
+#     apiVersion: gateway.envoyproxy.io/v1alpha1
+#     kind: EnvoyProxy
+#     metadata:
+#       name: custom-proxy-config
+#       namespace: ${var.gateway_api_namespace}
+#     spec:
+#       provider:
+#         type: Kubernetes
+#         kubernetes:
+#           envoyService:
+#             type: NodePort
+#     spec:
+#       provider:
+#         type: Kubernetes
+#         kubernetes:
+#           envoyService:
+#             type: NodePort
+#             patch:
+#               type: StrategicMerge
+#               value:
+#                 spec:
+#                   ports:
+#                   - name: http-80
+#                     nodePort: 30080
+#                     port: 80
+#   YAML
+
+#   depends_on = [
+#     kubectl_manifest.gateway_api_crds,
+#     helm_release.gateway_api
+#   ]
+# }
+
+###
+# Use with MetalLB
+###
 resource "kubectl_manifest" "envoy_proxy" {
   yaml_body = <<-YAML
     apiVersion: gateway.envoyproxy.io/v1alpha1
@@ -10,26 +52,17 @@ resource "kubectl_manifest" "envoy_proxy" {
         type: Kubernetes
         kubernetes:
           envoyService:
-            type: NodePort
-    spec:
-      provider:
-        type: Kubernetes
-        kubernetes:
-          envoyService:
-            type: NodePort
-            patch:
-              type: StrategicMerge
-              value:
-                spec:
-                  ports:
-                  - name: http-80
-                    nodePort: 30080
-                    port: 80
+            type: LoadBalancer
+            annotations:
+              metallb.universe.tf/loadBalancerIPs: "192.168.121.110"
+              metallb.universe.tf/allow-shared-ip: "envoy-shared-key"
   YAML
 
   depends_on = [
     kubectl_manifest.gateway_api_crds,
-    helm_release.gateway_api
+    kubectl_manifest.metallb_l2advertisement,
+    helm_release.gateway_api,
+    helm_release.metallb
   ]
 }
 
@@ -50,7 +83,7 @@ resource "kubectl_manifest" "gateway_class" {
 
   depends_on = [
     kubectl_manifest.gateway_api_crds,
-    kubectl_manifest.envoy_proxy,
+    # kubectl_manifest.envoy_proxy,
     helm_release.gateway_api
   ]
 }
@@ -77,7 +110,7 @@ resource "kubectl_manifest" "gateway" {
   depends_on = [
     kubectl_manifest.gateway_api_crds,
     kubectl_manifest.gateway_class,
-    kubectl_manifest.envoy_proxy,
+    # kubectl_manifest.envoy_proxy,
     helm_release.gateway_api
   ]
 }

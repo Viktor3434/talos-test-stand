@@ -7,3 +7,8 @@ variable "gateway_api_namespace" {
   description = "Namespace where Gateway-api will be installed"
   type        = string
 }
+
+variable "metallb_namespace" {
+  description = "Namespace where Gateway-api will be installed"
+  type        = string
+}
