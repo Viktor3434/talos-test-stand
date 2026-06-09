@@ -1,2 +1,19 @@
-# Placeholder for environment-specific overrides
-# Add overrides here that should be applied on top of values.yaml
+httpRoutes:
+  podinfo-main:
+    namespace: example-app
+    hostnames:
+      - "podinfo.local"
+      # - "*.example.com" # Можно добавить wildcard, если нужно
+    parentRefs:
+      - name: eg                        # Имя твоего Gateway
+        namespace: envoy-gateway-system # Namespace, где живет Gateway
+        sectionName: http               # Имя listener'а в Gateway
+    rules:
+      - matches:
+          - path:
+              type: PathPrefix
+              value: /
+        backendRefs:
+          - name: podinfo            # Имя Service (должен быть в том же namespace, что и HTTPRoute)
+            port: 9898               # Порт, который слушает Service
+            weight: 1
