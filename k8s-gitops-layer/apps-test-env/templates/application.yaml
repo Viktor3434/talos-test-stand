@@ -1,0 +1,78 @@
+{{- range $app := .Values.applications }}
+{{- $appName := $app.name | required (printf "Application 'name' is required in values.yaml") }}
+{{- $targetRevision := $app.targetRevision | required (printf "targetRevision is required for app %s" $appName) }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-{{ $appName }}-ns-{{ $app.namespace }}
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+{{- /* Labels and annotations block */}}
+  {{- if $app.labels }}
+  labels:
+    {{- toYaml $app.labels | nindent 4 }}
+  {{- end }}
+  {{- if $app.annotations }}
+  annotations:
+    {{- toYaml $app.annotations | nindent 4 }}
+  {{- end }}
+{{- /* END BLOCK */}}
+spec:
+  {{- if or $app.syncOptions $app.automated }}
+  syncPolicy:
+    {{- if $app.automated }}
+    automated:
+      {{- toYaml $app.automated | nindent 6 }}
+    {{- end }}
+    {{- if $app.syncOptions }}
+    syncOptions:
+      {{- range $app.syncOptions }}
+      - {{ . }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  destination:
+    namespace: {{ $app.namespace | default $appName }}
+    server: {{ $app.server | default $.Values.global.server | default "https://kubernetes.default.svc" }}
+  project: {{ $app.project | default $.Values.global.project | default "main" }}
+  sources:
+    {{- /* Helm chart from Bin-repo block */}}
+    - repoURL: {{ $app.chartRepo | default $.Values.global.chartRepo.repoURL | default "https://charts.helm.stable" }}
+      {{- if $app.chartFromGitRepo }}
+      {{- if not $app.chartRepo }}
+      {{- fail "applications.chartRepo required for chartFromGitRepo!" }}
+      {{- end }}
+      path: {{ $app.gitRepoPath | default ".helm" }}
+      {{- else }}
+      chart: {{ $app.chartName | default $appName }}
+      {{- end }}
+      targetRevision: {{ $targetRevision }}
+      helm:
+        releaseName: {{ $app.releaseName | default $appName }}
+        valueFiles:
+          {{- if $app.helm }}
+          {{- /* Defined Values  */}}
+          {{- range $valueFile := $app.helm.valueFiles }}
+          - {{ . }}
+          {{- end }}
+          {{- /* Cases of undefined values */}}
+          {{- else if and (not $app.helm) ($app.valuesRepo) }}
+            {{- /* The case when values ​​are in the project code repository */}}
+          - $values/.helm/argo-{{ $.Values.global.environment }}-values.yaml
+          {{- else }}
+            {{- /* The case where values ​​must match a pattern */}}
+          - $values/k8s-gitops-layer/values-{{ $.Values.global.environment }}/{{ $appName }}.yaml
+          {{- end }}
+    {{- /* END BLOCK  */}}
+    {{- /* Repository with value files block */}}
+    {{- if or $app.valuesRepo $.Values.global.valuesRepo }}
+    {{- $valuesRepo := $app.valuesRepo }}
+    - repoURL: {{ $valuesRepo.url | default $.Values.global.valuesRepo.url }}
+      targetRevision: {{ $valuesRepo.revision | default $.Values.global.valuesRepo.revision | default "main" }}
+      ref: values
+    {{- end }}
+    {{- /* END BLOCK  */}}
+
+{{- end }}

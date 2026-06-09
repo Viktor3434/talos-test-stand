@@ -665,7 +665,7 @@ configs:
     #   name: istio.io
     #   type: helm
     # private-helm-repo:
-    #   url: https://my-private-chart-repo.internal
+    #   url: https://my-private-chartRepo.internal
     #   name: private-repo
     #   type: helm
     #   password: my-password
