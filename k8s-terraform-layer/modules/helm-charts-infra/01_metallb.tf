@@ -1,5 +1,5 @@
 resource "helm_release" "metallb" {
-  name             = "metallb"
+  name = "metallb"
   # repository       = "https://metallb.github.io/metallb"
   chart            = "${path.module}/charts/metallb-0.16.1.tgz"
   namespace        = var.metallb_namespace

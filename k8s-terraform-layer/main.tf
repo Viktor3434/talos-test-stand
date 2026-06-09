@@ -16,7 +16,7 @@ module "helm-charts-infra" {
 
   gateway_api_namespace = module.namespaces.gateway_api_namespace
   argocd_namespace      = module.namespaces.argocd_namespace
-  metallb_namespace      = module.namespaces.metallb_namespace
+  metallb_namespace     = module.namespaces.metallb_namespace
 
   depends_on = [
     module.namespaces,

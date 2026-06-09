@@ -1,7 +1,7 @@
 resource "helm_release" "argocd" {
-  name             = "argocd"
+  name = "argocd"
   # repository       = "https://argoproj.github.io/argo-helm"
-  chart            = "${path.module}/charts/argo-cd-9.5.20.tgz"
+  chart = "${path.module}/charts/argo-cd-9.5.20.tgz"
   # version          = "9.5.20"
   namespace        = var.argocd_namespace
   create_namespace = false
