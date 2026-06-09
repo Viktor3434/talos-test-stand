@@ -10,25 +10,25 @@ global:
     revision: "main"
 
 namespaces:
-  - example-app
+  # - example-app
 
 applications:
-  - name: "podinfo"
-    namespace: "example-app"
-    chartFromGitRepo: false                                    # Default value - false (true option required .applications.chartRepo)
-    # gitRepoPath: path/to/chart                               # Default value - ".helm"
-    chartRepo: "https://stefanprodan.github.io/podinfo"        # Default value - global.chartRepo.repoURL
-    # chartName: "podinfo"                                     # Default value - applications.name
-    # valuesRepo:
-    #   url: https://github.com/Viktor3434/talos-test-stand.git   # Default in global
-    #   revision: main                                            # Default in global
-    # helm:
-    #   valueFiles:
-    #     - $values/k8s-gitops-layer/test-env/values/podinfo.yaml # Default value in template - $values/k8s-gitops-layer/{{ $.Values.global.environment }}/values/{{ $appName }}.yaml
-    targetRevision: 6.13.0
-    automated:
-      prune: true
-      selfHeal: true                                   # enable AutoSync
-    # syncOptions:
-    #   - "ServerSideApply=true"
-    #   - "CreateNamespace=false"                       # Default argo option
+  # - name: "podinfo"
+  #   namespace: "example-app"
+  #   chartFromGitRepo: false                                    # Default value - false (true option required .applications.chartRepo)
+  #   # gitRepoPath: path/to/chart                               # Default value - ".helm"
+  #   chartRepo: "https://stefanprodan.github.io/podinfo"        # Default value - global.chartRepo.repoURL
+  #   # chartName: "podinfo"                                     # Default value - applications.name
+  #   # valuesRepo:
+  #   #   url: https://github.com/Viktor3434/talos-test-stand.git   # Default in global
+  #   #   revision: main                                            # Default in global
+  #   # helm:
+  #   #   valueFiles:
+  #   #     - $values/k8s-gitops-layer/test-env/values/podinfo.yaml # Default value in template - $values/k8s-gitops-layer/{{ $.Values.global.environment }}/values/{{ $appName }}.yaml
+  #   targetRevision: 6.13.0
+  #   automated:
+  #     prune: true
+  #     selfHeal: true                                   # enable AutoSync
+  #   # syncOptions:
+  #   #   - "ServerSideApply=true"
+  #   #   - "CreateNamespace=false"                       # Default argo option
