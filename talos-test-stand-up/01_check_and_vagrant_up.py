@@ -11,7 +11,7 @@ from pathlib import Path
 from config import (
     VAGRANTFILE_DIR, ISO_PATH, POOL_ISO_NAME, POOL_ISO_TARGET,
     POOL_DISKS_NAME, POOL_DISKS_TARGET, ISO_VOL_NAME,
-    LIBVIRT_NETWORK, REQUIRED_GROUPS
+    LIBVIRT_NETWORK, REQUIRED_GROUPS, DHCP_RANGE_START, DHCP_RANGE_END
 )
 from utils.ui import print_ok, print_fail, print_info, print_warn
 from utils.checks import (
@@ -21,6 +21,7 @@ from utils.checks import (
 from utils.libvirt import (
     pool_exists, pool_active, create_pool, volume_exists, refresh_pool
 )
+from utils.libvirt_network import configure_dhcp_range
 from utils.template_render import generate_vagrantfile
 
 
@@ -81,6 +82,12 @@ def main():
     else:
         print_fail(f"Сеть '{LIBVIRT_NETWORK}' не активна")
         all_ok = False
+
+    # Настройка DHCP-диапазона (если сеть активна)
+    if all_ok:
+        if not configure_dhcp_range(LIBVIRT_NETWORK, DHCP_RANGE_START, DHCP_RANGE_END):
+            print_fail("Не удалось настроить DHCP-диапазон")
+            all_ok = False
 
     # Группы пользователя
     if check_user_in_groups(REQUIRED_GROUPS):

@@ -30,6 +30,10 @@ MEMORY_WORKER_NODES = 8192
 CPU_CP_NODES = 4
 CPU_WORKER_NODES = 4
 
+# For MetalLB
+DHCP_RANGE_START = "192.168.122.2"
+DHCP_RANGE_END = "192.168.122.100"
+
 # --- Ожидаемые имена дисков (формируются из количества узлов) ---
 EXPECTED_DISK_VOLS = (
     [f"talos-cp-{i}.qcow2" for i in range(1, CONTROL_PLANES_COUNT + 1)] +
