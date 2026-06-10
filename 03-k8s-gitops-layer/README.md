@@ -1,4 +1,4 @@
-# 📄 README: GitOps Layer (`k8s-gitops-layer`)
+# 📄 README: GitOps Layer (`03-k8s-gitops-layer`)
 
 > GitOps-управление приложениями на базе ArgoCD: реализация паттерна "App of Apps", декларативное конфигурирование через Helm-чарты и управление сетевыми маршрутами.
 
@@ -32,7 +32,7 @@
 ## 📁 Структура проекта
 
 ```text
-k8s-gitops-layer/
+03-k8s-gitops-layer/
 ├── apps-test-env/              # Helm-чарт "app-of-apps" для тестового окружения
 │   ├── Chart.yaml              # Метаданные чарта
 │   ├── values.yaml             # Values с настройками Argo application: приложения, репозитории
@@ -83,7 +83,7 @@ applications:
       - "ServerSideApply=true"
     helm:                               # Переопределение values
       valueFiles:
-        - "$values/k8s-gitops-layer/values-test-env/podinfo.yaml"
+        - "$values/03-k8s-gitops-layer/values-test-env/podinfo.yaml"
 ```
 либо:
 
@@ -152,7 +152,7 @@ values-test-env/
 Шаблон `application.yaml` автоматически подставляет values-файл по пути:
 
 ```text
-$values/k8s-gitops-layer/values-{{ $.Values.global.environment }}/{{ $appName }}.yaml
+$values/03-k8s-gitops-layer/values-{{ $.Values.global.environment }}/{{ $appName }}.yaml
 ```
 
 ## 🌐 Управление трафиком (HTTPRoute)
@@ -233,7 +233,7 @@ argocd app sync app-podinfo-ns-example-app
 
 ```bash
 # Проверьте наличие файла
-argocd repo get https://github.com/Viktor3434/talos-terraform-argocd.git --path k8s-gitops-layer/values-test-env/podinfo.yaml
+argocd repo get https://github.com/Viktor3434/talos-terraform-argocd.git --path 03-k8s-gitops-layer/values-test-env/podinfo.yaml
 ```
 
 ### 4. HTTPRoute не активен (Cilium Gateway не найден)

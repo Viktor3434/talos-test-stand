@@ -101,7 +101,7 @@ talosctl get members
 
 Дополнительно modules/helm-charts-infra создаёт в ArgoCD:
 - AppProject "main" — политики доступа для CI/CD
-- Application "apps" — ссылка на k8s-gitops-layer/apps-test-env для синхронизации приложений
+- Application "apps" — ссылка на 03-k8s-gitops-layer/apps-test-env для синхронизации приложений
 
 ## 💾 Управление состоянием
 Импорт секретов Talos
@@ -120,7 +120,7 @@ Terraform настраивает ArgoCD для дальнейшей синхро
          ↓
 [создаёт] ArgoCD Application "apps"
          ↓
-k8s-gitops-layer/apps-test-env (GitOps)
+03-k8s-gitops-layer/apps-test-env (GitOps)
          ↓
 [синхронизирует] приложения в кластер
 ```

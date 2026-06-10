@@ -19,7 +19,7 @@
     │   ├── .helm/                           # Директория с чартом для проекта
     │   └── .values/                         # Директория с values файлом
     │
-    ├── k8s-gitops-layer/                    # GitOps-слой (ArgoCD + App of Apps)
+    ├── 03-k8s-gitops-layer/                    # GitOps-слой (ArgoCD + App of Apps)
     │   ├── apps-test-env/                   # Helm-чарт в котором генерируются "дочерние" чарты (App of Apps)
     │   │   ├── templates/                   # Шаблоны ArgoCD-app, HTTPRoute, Namespaces
     │   │   ├── values.yaml                  # 
@@ -67,7 +67,7 @@
 - Паттерн **App of Apps** — декларативное описание всех приложений в одном месте.
 - Gateway API (Cilium) — управление входящим трафиком через HTTPRoute.
 
-Подробнее: см. `k8s-gitops-layer/README.md`.
+Подробнее: см. `03-k8s-gitops-layer/README.md`.
 
 ## ⚙️ Требования для использования GitOps-слоя
 

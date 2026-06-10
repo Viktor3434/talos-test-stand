@@ -28,7 +28,7 @@ applications:
   #   #   revision: main                                            # Default in global
   #   # helm:
   #   #   valueFiles:
-  #   #     - $values/k8s-gitops-layer/test-env/values/podinfo.yaml # Default value in template - $values/k8s-gitops-layer/{{ $.Values.global.environment }}/values/{{ $appName }}.yaml
+  #   #     - $values/03-k8s-gitops-layer/test-env/values/podinfo.yaml # Default value in template - $values/03-k8s-gitops-layer/{{ $.Values.global.environment }}/values/{{ $appName }}.yaml
   #   targetRevision: 6.13.0
   #   automated:
   #     prune: true
@@ -52,7 +52,7 @@ applications:
   #     revision: main                                            # Default in global
   #   helm:
   #     valueFiles:
-  #       - $values/demo-chart-in-git-repo/.values/values.yaml    # Default value in template - $values/k8s-gitops-layer/{{ $.Values.global.environment }}/values/{{ $appName }}.yaml
+  #       - $values/demo-chart-in-git-repo/.values/values.yaml    # Default value in template - $values/03-k8s-gitops-layer/{{ $.Values.global.environment }}/values/{{ $appName }}.yaml
   #   targetRevision: main
   #   automated:
   #     prune: true

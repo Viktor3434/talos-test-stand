@@ -63,7 +63,7 @@ spec:
           - $values/.helm/argo-{{ $.Values.global.environment }}-values.yaml
           {{- else }}
             {{- /* The case where values ​​must match a pattern */}}
-          - $values/k8s-gitops-layer/values-{{ $.Values.global.environment }}/{{ $appName }}.yaml
+          - $values/03-k8s-gitops-layer/values-{{ $.Values.global.environment }}/{{ $appName }}.yaml
           {{- end }}
     {{- /* END BLOCK  */}}
     {{- /* Repository with value files block */}}
