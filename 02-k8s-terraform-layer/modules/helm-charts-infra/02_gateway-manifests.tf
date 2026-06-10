@@ -32,7 +32,6 @@
 #   YAML
 
 #   depends_on = [
-#     kubectl_manifest.gateway_api_crds,
 #     helm_release.gateway_api
 #   ]
 # }
@@ -59,7 +58,6 @@ resource "kubectl_manifest" "envoy_proxy" {
   YAML
 
   depends_on = [
-    kubectl_manifest.gateway_api_crds,
     kubectl_manifest.metallb_l2advertisement,
     helm_release.gateway_api,
     helm_release.metallb
@@ -82,8 +80,6 @@ resource "kubectl_manifest" "gateway_class" {
   YAML
 
   depends_on = [
-    kubectl_manifest.gateway_api_crds,
-    # kubectl_manifest.envoy_proxy,
     helm_release.gateway_api
   ]
 }
@@ -108,9 +104,7 @@ resource "kubectl_manifest" "gateway" {
   YAML
 
   depends_on = [
-    kubectl_manifest.gateway_api_crds,
     kubectl_manifest.gateway_class,
-    # kubectl_manifest.envoy_proxy,
     helm_release.gateway_api
   ]
 }
