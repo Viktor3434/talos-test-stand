@@ -22,7 +22,7 @@
 | Инструмент | Версия | Примечание |
 |------------|--------|------------|
 | `kubectl` | `~1.30+` | Для отладки и управления кластером |
-| `ArgoCD` | `v2.10+` | Установлен в кластере (через `k8s-terraform-layer`) |
+| `ArgoCD` | `v2.10+` | Установлен в кластере (через `02-k8s-terraform-layer`) |
 | `kubeconfig` | — | Файл `~/.kube/config` с контекстом `admin@talos-cluster` |
 | `helm` | `~3.14+` | Для локальной отладки чартов |
 | Git-доступ | — | Доступ к репозиторию `https://github.com/Viktor3434/talos-terraform-argocd.git` |
@@ -199,7 +199,7 @@ httpRoutes:
 
 ## 🔌 Интеграция с Cilium Gateway API
 
-Этот слой тесно интегрируется с **Cilium Gateway API**, установленным через `k8s-terraform-layer`. Cilium обеспечивает:
+Этот слой тесно интегрируется с **Cilium Gateway API**, установленным через `02-k8s-terraform-layer`. Cilium обеспечивает:
 
 - Envoy Gateway как контроллер ingress-трафика.
 - HTTPRoute как декларативный способ настройки маршрутизации.
@@ -270,7 +270,7 @@ kubectl delete application -n argocd -l app.kubernetes.io/instance=app-of-apps-t
 
 - [ArgoCD: App of Apps Pattern](https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/)
 - [Helm Chart для apps-test-env](./apps-test-env/)
-- [Terraform-слой для установки CNI и ArgoCD](../k8s-terraform-layer/)
+- [Terraform-слой для установки CNI и ArgoCD](../02-k8s-terraform-layer/)
 
 ## 📜 Лицензия
 MIT — используйте на свой страх и риск. Автор не несёт ответственности за потерю данных в продакшен-кластерах.

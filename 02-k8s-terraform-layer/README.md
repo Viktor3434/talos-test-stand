@@ -1,4 +1,4 @@
-# 📄 README: Terraform Layer (`k8s-terraform-layer`)
+# 📄 README: Terraform Layer (`02-k8s-terraform-layer`)
 
 > Инфраструктура как код для управления кластером Talos Linux: установка CNI, настройка namespaces, деплой инфраструктурных Helm-чартов и интеграция с ArgoCD.
 
@@ -32,7 +32,7 @@
 ## 📁 Структура проекта
 
 ```text
-k8s-terraform-layer/
+02-k8s-terraform-layer/
 ├── main.tf                 # Точка входа: вызов модулей
 ├── provider.tf             # Конфигурация провайдеров
 ├── import.tf               # Импорт существующих секретов Talos
@@ -61,7 +61,7 @@ k8s-terraform-layer/
 ### 1. Инициализация
 
 ```bash
-cd k8s-terraform-layer
+cd 02-k8s-terraform-layer
 terraform init
 ```
 
@@ -116,7 +116,7 @@ import {
 ## 🔗 Интеграция с GitOps
 ```
 Terraform настраивает ArgoCD для дальнейшей синхронизации:
-k8s-terraform-layer (IaC)
+02-k8s-terraform-layer (IaC)
          ↓
 [создаёт] ArgoCD Application "apps"
          ↓

@@ -1,4 +1,4 @@
-# k8s-terraform-layer/modules/helm-charts-infra/values/argocd-values.yaml
+# 02-k8s-terraform-layer/modules/helm-charts-infra/values/argocd-values.yaml
 
 # Глобальные настройки
 global:

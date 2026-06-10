@@ -28,7 +28,7 @@
     │   │   └── podinfo.yaml
     │   └── README.md
     │
-    ├── k8s-terraform-layer/                 # Terraform-слой для развёртывания инфраструктурных компонентов в кластере
+    ├── 02-k8s-terraform-layer/                 # Terraform-слой для развёртывания инфраструктурных компонентов в кластере
     │   ├── modules/
     │   │   ├── cni-install/                 # Установка CNI (Cilium)
     │   │   ├── del-flannel/                 # Удаление flannel (если требуется)

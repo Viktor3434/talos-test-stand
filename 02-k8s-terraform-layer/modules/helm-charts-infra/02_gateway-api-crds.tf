@@ -1,4 +1,4 @@
-# k8s-terraform-layer/modules/helm-charts-infra/gateway-api.tf
+# 02-k8s-terraform-layer/modules/helm-charts-infra/gateway-api.tf
 
 ###
 # Install CRDs
