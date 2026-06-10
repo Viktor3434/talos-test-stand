@@ -12,6 +12,7 @@ Vagrant.configure("2") do |config|
   {% for i in range(1, control_planes_count + 1) %}
   config.vm.define "talos-cp-{{ i }}" do |node|
     node.vm.provider :libvirt do |lv|
+      lv.default_prefix = ""
       lv.memory = {{ cp_memory | default(4096) }}
       lv.cpus = {{ cp_cpus | default(4) }}
       lv.storage :file, :device => :cdrom, :path => ISO_PATH
@@ -27,6 +28,7 @@ Vagrant.configure("2") do |config|
   {% for i in range(1, workers_count + 1) %}
   config.vm.define "talos-worker-{{ i }}" do |node|
     node.vm.provider :libvirt do |lv|
+      lv.default_prefix = ""
       lv.memory = {{ worker_memory | default(4096) }}
       lv.cpus = {{ worker_cpus | default(4) }}
       lv.storage :file, :device => :cdrom, :path => ISO_PATH
