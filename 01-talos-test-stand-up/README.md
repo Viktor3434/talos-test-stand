@@ -40,7 +40,7 @@
 
 ```bash
 git clone <url-репозитория> talos-terraform-argocd
-cd talos-terraform-argocd/talos-test-stand-up
+cd talos-terraform-argocd/01-talos-test-stand-up
 ```
 
 ### 2. Установка зависимостей для Vagrant
