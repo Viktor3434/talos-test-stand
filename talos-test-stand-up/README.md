@@ -39,8 +39,8 @@
 ### 1. Клонирование репозитория
 
 ```bash
-git clone <url-репозитория> talos-test-stand
-cd talos-test-stand/talos-test-stand-up
+git clone <url-репозитория> talos-terraform-argocd
+cd talos-terraform-argocd/talos-test-stand-up
 ```
 
 ### 2. Установка зависимостей для Vagrant
@@ -211,11 +211,11 @@ python3 03_install_workers.py
 
 ## 📄 Лицензия
 
-Этот проект является частью более крупного репозитория `talos-test-stand` и распространяется на условиях лицензии, указанной в корне репозитория.
+Этот проект является частью более крупного репозитория `talos-terraform-argocd` и распространяется на условиях лицензии, указанной в корне репозитория.
 
 ### 🔗 Связанные ресурсы
 
 - [Официальная документация Talos Linux](https://www.talos.dev)
 - [Vagrant + libvirt руководство от Sidero Labs](https://www.siderolabs.com/docs/virtualized-platforms/vagrant-libvirt/)
 - [Исходный код Talos Linux на GitHub](https://github.com/siderolabs/talos)
-- [Основной репозиторий проекта](https://github.com/Viktor3434/talos-test-stand)
+- [Основной репозиторий проекта](https://github.com/Viktor3434/talos-terraform-argocd)

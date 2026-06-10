@@ -25,7 +25,7 @@
 | `ArgoCD` | `v2.10+` | Установлен в кластере (через `k8s-terraform-layer`) |
 | `kubeconfig` | — | Файл `~/.kube/config` с контекстом `admin@talos-cluster` |
 | `helm` | `~3.14+` | Для локальной отладки чартов |
-| Git-доступ | — | Доступ к репозиторию `https://github.com/Viktor3434/talos-test-stand.git` |
+| Git-доступ | — | Доступ к репозиторию `https://github.com/Viktor3434/talos-terraform-argocd.git` |
 
 ---
 
@@ -93,10 +93,10 @@ applications:
     namespace: "example-app"
     chartFromGitRepo: true
     gitRepoPath: "demo-chart-in-git-repo/.helm"
-    chartRepo: "https://github.com/Viktor3434/talos-test-stand.git"
+    chartRepo: "https://github.com/Viktor3434/talos-terraform-argocd.git"
     chartName: "podinfo"                                           
     valuesRepo:
-      url: https://github.com/Viktor3434/talos-test-stand.git
+      url: https://github.com/Viktor3434/talos-terraform-argocd.git
       revision: main
     helm:
       valueFiles:
@@ -135,7 +135,7 @@ global:
   chartRepo:
     repoURL: "https://charts.bitnami.com/bitnami"  # Репозиторий чартов по умолчанию
   valuesRepo:
-    url: "https://github.com/Viktor3434/talos-test-stand.git"
+    url: "https://github.com/Viktor3434/talos-terraform-argocd.git"
     revision: "main"
 ```
 
@@ -215,7 +215,7 @@ httpRoutes:
 # Проверьте подключение к репозиторию
 argocd repo list
 # Переподключитесь с правильными учетными данными
-argocd repo add https://github.com/Viktor3434/talos-test-stand.git --username <user> --password <token>
+argocd repo add https://github.com/Viktor3434/talos-terraform-argocd.git --username <user> --password <token>
 ```
 
 ### 2. Приложение в статусе "OutOfSync"
@@ -233,7 +233,7 @@ argocd app sync app-podinfo-ns-example-app
 
 ```bash
 # Проверьте наличие файла
-argocd repo get https://github.com/Viktor3434/talos-test-stand.git --path k8s-gitops-layer/values-test-env/podinfo.yaml
+argocd repo get https://github.com/Viktor3434/talos-terraform-argocd.git --path k8s-gitops-layer/values-test-env/podinfo.yaml
 ```
 
 ### 4. HTTPRoute не активен (Cilium Gateway не найден)

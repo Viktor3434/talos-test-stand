@@ -79,7 +79,7 @@ resource "kubernetes_manifest" "argocd_application_apps" {
     spec = {
       project = "main"
       source = {
-        repoURL        = "https://github.com/Viktor3434/talos-test-stand.git"
+        repoURL        = "https://github.com/Viktor3434/talos-terraform-argocd.git"
         targetRevision = "main"
         path           = "k8s-gitops-layer/apps-test-env"
         helm = {

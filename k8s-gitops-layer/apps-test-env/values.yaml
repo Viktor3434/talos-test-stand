@@ -6,7 +6,7 @@ global:
   chartRepo:
     repoURL: "https://charts.bitnami.com/bitnami"
   valuesRepo:
-    url: "https://github.com/Viktor3434/talos-test-stand.git"
+    url: "https://github.com/Viktor3434/talos-terraform-argocd.git"
     revision: "main"
 
 namespaces:
@@ -24,7 +24,7 @@ applications:
   #   chartRepo: "https://stefanprodan.github.io/podinfo"        # Default value - global.chartRepo.repoURL
   #   # chartName: "podinfo"                                     # Default value - applications.name
   #   # valuesRepo:
-  #   #   url: https://github.com/Viktor3434/talos-test-stand.git   # Default in global
+  #   #   url: https://github.com/Viktor3434/talos-terraform-argocd.git   # Default in global
   #   #   revision: main                                            # Default in global
   #   # helm:
   #   #   valueFiles:
@@ -45,10 +45,10 @@ applications:
   #   namespace: "example-app"
   #   chartFromGitRepo: true                                          # Default value - false (true option required .applications.chartRepo)
   #   gitRepoPath: "demo-chart-in-git-repo/.helm"                     # Default value - ".helm"
-  #   chartRepo: "https://github.com/Viktor3434/talos-test-stand.git" # Default value - global.chartRepo.repoURL
+  #   chartRepo: "https://github.com/Viktor3434/talos-terraform-argocd.git" # Default value - global.chartRepo.repoURL
   #   chartName: "podinfo"                                            # Default value - applications.name
   #   valuesRepo:
-  #     url: https://github.com/Viktor3434/talos-test-stand.git   # Default in global
+  #     url: https://github.com/Viktor3434/talos-terraform-argocd.git   # Default in global
   #     revision: main                                            # Default in global
   #   helm:
   #     valueFiles:

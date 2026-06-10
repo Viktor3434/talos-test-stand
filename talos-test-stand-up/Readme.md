@@ -17,8 +17,8 @@ Talos Linux Test Stand
 # Установка и настройка
 1. Клонирование репозитория
 bash
-git clone <репозиторий> talos-test-stand
-cd talos-test-stand
+git clone <репозиторий> talos-terraform-argocd
+cd talos-terraform-argocd
 2. Установка зависимостей для Vagrant
 ```bash
 # Установите Vagrant согласно документации вашего дистрибутива
