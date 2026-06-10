@@ -8,7 +8,6 @@
 
 - [Требования](#-требования)
 - [Структура проекта](#-структура-проекта)
-- [Быстрый старт](#-быстрый-старт)
 - [Архитектура GitOps: паттерн App of Apps](#-архитектура-gitops-паттерн-app-of-apps)
 - [Управление приложениями](#-управление-приложениями)
 - [Конфигурация окружений](#-конфигурация-окружений)
@@ -36,52 +35,15 @@
 k8s-gitops-layer/
 ├── apps-test-env/              # Helm-чарт "app-of-apps" для тестового окружения
 │   ├── Chart.yaml              # Метаданные чарта
-│   ├── values.yaml             # Базовые значения: приложения, репозитории
-│   ├── values-extra.yaml       # Дополнительные настройки: HTTPRoute, Gateway API
+│   ├── values.yaml             # Values с настройками Argo application: приложения, репозитории
+│   ├── values-extra.yaml       # Дополнительные k8s ресурсы (например: HTTPRoute), будут созданы из main app 
 │   └── templates/              # Шаблоны ArgoCD-ресурсов
 │       ├── application.yaml    # Генерация ArgoCD Application для каждого приложения
-│       ├── httproute.yaml      # Генерация HTTPRoute (Gateway API)
+│       ├── httproute.yaml      # Генерация HTTPRoute (Gateway API), дополнительный ресурс.
 │       └── namespaces.yaml     # Пре-создание namespace'ов с sync-wave -1
 └── values-test-env/            # Переопределения значений для тестового окружения
     └── podinfo.yaml            # Helm-values для приложения podinfo
 ```
-
-## 🚀 Быстрый старт
-
-### 1. Убедитесь, что ArgoCD установлен
-
-```bash
-kubectl get pods -n argocd
-```
-
-### 2. Зарегистрируйте репозиторий в ArgoCD
-
-```bash
-argocd repo add https://github.com/Viktor3434/talos-test-stand.git --username <user> --password <token>
-```
-
-### 3. Создайте "корневое" приложение ArgoCD
-
-Корневое приложение будет отслеживать Helm-чарт `apps-test-env`:
-
-```bash
-argocd app create app-of-apps-test-env \
-  --repo https://github.com/Viktor3434/talos-test-stand.git \
-  --path k8s-gitops-layer/apps-test-env \
-  --dest-server https://kubernetes.default.svc \
-  --dest-namespace argocd \
-  --sync-policy automated \
-  --auto-prune \
-  --self-heal
-```
-
-### 4. Синхронизируйте приложение
-
-```bash
-argocd app sync app-of-apps-test-env
-```
-
-После синхронизации ArgoCD автоматически создаст все дочерние приложения (например, `podinfo`) и необходимые namespace'ы.
 
 ## 🏗️ Архитектура GitOps: паттерн App of Apps
 
@@ -122,6 +84,27 @@ applications:
     helm:                               # Переопределение values
       valueFiles:
         - "$values/k8s-gitops-layer/values-test-env/podinfo.yaml"
+```
+либо:
+
+```yaml
+applications:
+  - name: "podinfo-from-git"
+    namespace: "example-app"
+    chartFromGitRepo: true
+    gitRepoPath: "demo-chart-in-git-repo/.helm"
+    chartRepo: "https://github.com/Viktor3434/talos-test-stand.git"
+    chartName: "podinfo"                                           
+    valuesRepo:
+      url: https://github.com/Viktor3434/talos-test-stand.git
+      revision: main
+    helm:
+      valueFiles:
+        - $values/demo-chart-in-git-repo/.values/values.yaml
+    targetRevision: main
+    automated:
+      prune: true
+      selfHeal: true
 ```
 
 ### Параметры приложения
@@ -288,3 +271,6 @@ kubectl delete application -n argocd -l app.kubernetes.io/instance=app-of-apps-t
 - [ArgoCD: App of Apps Pattern](https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/)
 - [Helm Chart для apps-test-env](./apps-test-env/)
 - [Terraform-слой для установки CNI и ArgoCD](../k8s-terraform-layer/)
+
+## 📜 Лицензия
+MIT — используйте на свой страх и риск. Автор не несёт ответственности за потерю данных в продакшен-кластерах.
