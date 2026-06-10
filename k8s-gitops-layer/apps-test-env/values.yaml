@@ -10,7 +10,7 @@ global:
     revision: "main"
 
 namespaces:
-  # - example-app
+  - example-app
 
 applications:
   # - name: "podinfo"
@@ -32,3 +32,23 @@ applications:
   #   # syncOptions:
   #   #   - "ServerSideApply=true"
   #   #   - "CreateNamespace=false"                       # Default argo option
+
+  - name: "podinfo-from-git"
+    namespace: "example-app"
+    chartFromGitRepo: true                                          # Default value - false (true option required .applications.chartRepo)
+    gitRepoPath: "demo-chart-in-git-repo/.helm"                     # Default value - ".helm"
+    chartRepo: "https://github.com/Viktor3434/talos-test-stand.git" # Default value - global.chartRepo.repoURL
+    chartName: "podinfo"                                            # Default value - applications.name
+    valuesRepo:
+      url: https://github.com/Viktor3434/talos-test-stand.git   # Default in global
+      revision: main                                            # Default in global
+    helm:
+      valueFiles:
+        - $values/demo-chart-in-git-repo/.values/values.yaml    # Default value in template - $values/k8s-gitops-layer/{{ $.Values.global.environment }}/values/{{ $appName }}.yaml
+    targetRevision: main
+    automated:
+      prune: true
+      selfHeal: true                                   # enable AutoSync
+    # syncOptions:
+    #   - "ServerSideApply=true"
+    #   - "CreateNamespace=false"                       # Default argo option

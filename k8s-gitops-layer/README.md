@@ -89,7 +89,7 @@ argocd app sync app-of-apps-test-env
 
 **Как это работает:**
 
-1. Корневое приложение (`app-of-apps-test-env`) развернуто в ArgoCD вручную.
+1. Корневое приложение (`app-of-apps-test-env`) развернуто в ArgoCD вручную (из Terraform).
 2. Оно отслеживает Helm-чарт `apps-test-env` в Git-репозитории.
 3. Helm-чарт генерирует манифесты `ArgoCD Application` для каждого приложения, объявленного в `values.yaml`.
 4. Дочерние приложения указывают на свои Helm-чарты и значения (например, `podinfo` из `values-test-env/podinfo.yaml`).
