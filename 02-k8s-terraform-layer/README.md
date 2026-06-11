@@ -2,10 +2,12 @@
 
 > Инфраструктура как код для управления кластером Talos Linux: установка CNI, настройка namespaces, деплой инфраструктурных Helm-чартов и интеграция с ArgoCD.
 
-**Важно!** применяется в 2 этапа (как применить с **plan** смотри [Быстрый старт](#-быстрый-старт)):
-- terraform apply -target=module.helm-charts-infra.helm_release.argocd
-- terraform apply
-
+**Важно!** применяется в 3 этапа (как применить с **plan** смотри [Быстрый старт](#-быстрый-старт)):
+```bash
+terraform apply -target=module.helm-charts-infra.null_resource.force_helm_template
+terraform apply -target=module.helm-charts-infra.helm_release.argocd
+terraform apply
+```
 ---
 
 ## 📋 Оглавление
@@ -71,6 +73,9 @@ terraform init
 
 ### 2. Планирование и применение
 ```bash
+terraform plan -out=tfplan -target=module.helm-charts-infra.null_resource.force_helm_template
+terraform apply tfplan
+
 terraform plan -out=tfplan -target=module.helm-charts-infra.helm_release.argocd
 terraform apply tfplan
 

@@ -11,8 +11,17 @@ data "helm_template" "gateway_crds" {
   include_crds = true 
 }
 
+resource "null_resource" "force_helm_template" {
+  triggers = {
+    # Ссылка на data.helm_template заставляет Terraform прочитать его при apply
+    manifest = data.helm_template.gateway_crds.manifest
+  }
+}
+
 data "kubectl_file_documents" "split_gateway_crds" {
   content = data.helm_template.gateway_crds.manifest
+
+  depends_on = [data.helm_template.gateway_crds]
 }
 
 resource "kubectl_manifest" "gateway_crds" {
@@ -22,7 +31,7 @@ resource "kubectl_manifest" "gateway_crds" {
   server_side_apply = true # CRD требуют server-side apply из-за размера OpenAPI схем
   force_conflicts   = true # При удалении стенда CRD удаляются автоматически
 
-  depends_on = [data.kubectl_file_documents.split_gateway_crds]
+  depends_on = [data.kubectl_file_documents.split_gateway_crds, data.helm_template.gateway_crds]
 }
 
 ###
